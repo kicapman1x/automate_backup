@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /apps/util/config/backup.conf
+source ${CONFIG_PATH}
 
 dateToday=$(date +%Y-%m-%d)
 
@@ -40,8 +40,13 @@ if [ ! -d "$back_up_dir/backup" ];then
   mkdir -p "$back_up_dir/backup"
 fi
 
+echo "Proceeding with copying of files in VM!"
+
 #Making back up now 
 tar --xattrs --acls --one-file-system -cpzf "$back_up_dir/backup/archlinux-backup-$dateToday.tar.gz" --exclude=/proc --exclude=/sys --exclude=/dev --exclude=/run --exclude=/tmp / 
+
+echo "Done copying -- proceeding with clean up: proceeding to retain $num_retain_files files"
+
 
 #Cleaning up 
 currentFiles=( $(ls -t "$back_up_dir/backup") )
@@ -52,6 +57,12 @@ for f in "${to_delete[@]}"; do
     rm -i "$back_up_dir/backup/$f"
 done
 
+echo "Finished will all tasks!"
+
+wait 
+
+echo "Proceeding to unmount!"
+
 #Unmount
-umount $back_up_dir
+umount -lf $back_up_dir
 
