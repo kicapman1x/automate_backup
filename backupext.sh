@@ -54,7 +54,7 @@ to_delete=( "${currentFiles[@]: $num_retain_files}" )
 
 for f in "${to_delete[@]}"; do
     echo "Deleting $f"
-    rm -i "$back_up_dir/backup/$f"
+    rm -f "$back_up_dir/backup/$f"
 done
 
 echo "Finished will all tasks!"
@@ -64,5 +64,5 @@ wait
 echo "Proceeding to unmount!"
 
 #Unmount
-umount -lf $back_up_dir
+timeout 10s umount -lf $back_up_dir
 
