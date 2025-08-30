@@ -57,12 +57,5 @@ for f in "${to_delete[@]}"; do
     rm -f "$back_up_dir/backup/$f"
 done
 
-echo "Finished will all tasks!"
-
-wait 
-
-echo "Proceeding to unmount!"
-
-#Unmount
-timeout 10s umount -lf $back_up_dir
+echo "Script completed -- please remember to unmount later"
 
